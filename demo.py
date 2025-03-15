@@ -103,7 +103,7 @@ def respond(user_aud):
             print("ttfs: ", end-true_start)
 
         # make sure we always have voice sample preprompt
-        csm_context = bootleg_maya + segments
+        csm_context = bootleg_maya + segments[-7:]
         samples = []
 
         # stream frame by frame as it generates
