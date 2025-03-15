@@ -111,6 +111,7 @@ class Generator:
         temperature: float = 0.9,
         topk: int = 50,
     ):
+        self._audio_tokenizer._stop_streaming()
         self._model.reset_caches()
 
         max_audio_frames = int(max_audio_length_ms / 80)

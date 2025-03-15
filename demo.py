@@ -158,8 +158,7 @@ def startup():
     yield (SAMPLE_FREQ, au.unsqueeze(0).cpu().numpy())
 
 stream = Stream(
-    # TODO: interrupt fucks everything
-    handler=ReplyOnPause(respond, startup_fn=startup, input_sample_rate=SAMPLE_FREQ, can_interrupt=False),
+    handler=ReplyOnPause(respond, startup_fn=startup, input_sample_rate=SAMPLE_FREQ, can_interrupt=True),
     modality="audio",
     mode="send-receive",
 )
