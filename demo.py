@@ -131,7 +131,13 @@ def sentence_stream(response):
     buf, sen, last = "", [], 0
 
     for chunk in response:
-        buf += chunk.choices[0].delta.content
+        content = chunk.choices[0].delta.content
+
+        if content is None:
+            continue
+
+        buf += content
+
         sen = sent_tokenize(buf)
 
         n = len(sen)
