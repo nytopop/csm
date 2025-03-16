@@ -86,6 +86,9 @@ def respond(user_aud):
     user_aud = user_aud.astype(numpy.float32, order='C') / 32768.0
     user_aud = torch.tensor(user_aud).squeeze(0)
 
+    global messages
+    global segments
+
     # feed (user_aud, user_msg) into CSM context
     segments.append(Segment(text=user_msg, speaker=1, audio=user_aud))
 
@@ -132,14 +135,11 @@ def sentence_stream(response):
 
     for chunk in response:
         content = chunk.choices[0].delta.content
-
         if content is None:
             continue
 
         buf += content
-
         sen = sent_tokenize(buf)
-
         n = len(sen)
 
         if n > last and n > 1:
@@ -152,8 +152,10 @@ def sentence_stream(response):
 
 # on stream startup, send some pregen crap and reset contexts
 def startup():
+    global segments
     segments = []
 
+    global messages
     messages = [
         {"role": "system", "content": SYSTEM},
         {"role": "assistant", "content":"It almost feels like we were just chatting. Anything else I can help with, or did I leave you hanging?"},
